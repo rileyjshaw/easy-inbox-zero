@@ -1,10 +1,12 @@
 {
   "name": "easy-inbox-zero",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Achieve coveted Inbox Zero status and impress your friends without actually doing anything",
   "main": "inbox-zero.js",
   "scripts": {
-    "lint": "web-ext lint --source-dir ."
+    "test": "node --test test/*.test.cjs",
+    "lint": "web-ext lint",
+    "build": "web-ext build --overwrite-dest"
   },
   "repository": {
     "type": "git",
@@ -22,10 +24,33 @@
   "author": "rileyjshaw",
   "license": "MIT",
   "devDependencies": {
-    "web-ext": "^10.5.0"
+    "web-ext": "10.5.0"
   },
   "engines": {
     "node": ">=20.0.0",
     "npm": ">=8.0.0"
+  },
+  "webExt": {
+    "sourceDir": ".",
+    "artifactsDir": "package",
+    "ignoreFiles": [
+      "test/**",
+      "package/**",
+      "package.json",
+      "package-lock.json",
+      "README.md",
+      "**/*.psd",
+      "**/*.svg",
+      "**/*.gif",
+      "before.png",
+      "after.png",
+      "banner.png",
+      "timmies.png",
+      "images/promo-*",
+      "images/title-*",
+      "images/sidebar-*",
+      "images/banner.png",
+      "images/screenshot.png"
+    ]
   }
 }

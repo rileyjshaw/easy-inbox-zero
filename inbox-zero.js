@@ -7,10 +7,13 @@
 	(document.head || document.documentElement).append(styleElement);
 
 	let titlePattern = null;
+	let originalTitle = document.title;
+	let appliedTitle = null;
 
 	function normalizeFolders (value) {
 		if (!Array.isArray(value)) return DEFAULT_FOLDERS;
-		return [...new Set(value.map((folder) => String(folder).trim()).filter(Boolean))];
+		return [...new Set(value.filter((folder) => typeof folder === 'string')
+			.map((folder) => folder.trim()).filter(Boolean))];
 	}
 
 	function escapeRegExp (value) {
@@ -21,20 +24,21 @@
 		return value
 			.replace(/\\/g, '\\\\')
 			.replace(/"/g, '\\"')
-			.replace(/\r?\n/g, '\\a ');
+			.replace(/[\n\r\f\0]/g, (character) => `\\${character.charCodeAt(0).toString(16)} `);
 	}
 
 	function updateTitle () {
-		if (!titlePattern) return;
-		const nextTitle = document.title.replace(titlePattern, '$1');
+		if (document.title !== appliedTitle) originalTitle = document.title;
+		const nextTitle = titlePattern ? originalTitle.replace(titlePattern, '$1') : originalTitle;
+		appliedTitle = nextTitle;
 		if (nextTitle !== document.title) document.title = nextTitle;
 	}
 
 	function applyFolders (value) {
 		const folders = normalizeFolders(value);
 		if (folders.length) {
-			const alternatives = folders.map(escapeRegExp).join('|');
-			titlePattern = new RegExp(`("?(?:${alternatives})"?) \\(\\d+\\)`, 'g');
+			const alternatives = folders.sort((a, b) => b.length - a.length).map(escapeRegExp).join('|');
+			titlePattern = new RegExp(`^("?(?:${alternatives})"?) \\(\\d+\\)`);
 		} else {
 			titlePattern = null;
 		}
@@ -64,9 +68,9 @@
 		subtree: true,
 	});
 
-	chrome.storage.local.get({folders: DEFAULT_FOLDERS}, ({folders}) => {
-		if (chrome.runtime.lastError) return;
-		applyFolders(folders);
+	chrome.runtime.sendMessage({type: 'easy-inbox-zero:get-folders'}, (response) => {
+		if (chrome.runtime.lastError || !response || response.error) return;
+		applyFolders(response.folders);
 	});
 
 	chrome.storage.onChanged.addListener((changes, areaName) => {

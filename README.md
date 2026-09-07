@@ -24,3 +24,17 @@ By default, the unread count for your “Inbox” folder is hidden. To change wh
 ---
 
 ~<b name="f1">1:</b> Will also run on Firefox as soon as [WebExtensions support](https://wiki.mozilla.org/WebExtensions/RoadMap#Timeline) ships.~
+
+## Development
+
+Requires Node.js 20 or newer.
+
+```sh
+npm install
+npm test
+npm run lint
+npm run build
+```
+
+Release ZIPs are written to `package/`; tests and promotional artwork are excluded.
+Load this directory as an unpacked extension in Chrome, or load `manifest.json` as a temporary add-on in Firefox.
