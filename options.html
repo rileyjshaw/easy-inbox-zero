@@ -5,11 +5,15 @@
 	<title>Easy Inbox Zero Options</title>
 </head>
 <body>
-	<p>This is a list of all the folders to watch for.</p>
+	<h1>Easy Inbox Zero</h1>
+	<p>Choose the folders whose unread counts should be hidden.</p>
 	<ul>
-		<li><p>Each folder name should go on its own line.</p></li>
-		<li><p>Entries are case-sensitive.</p></li>
+		<li>Put each folder name on its own line.</li>
+		<li>Entries are case-sensitive.</li>
 	</ul>
-	<script src="./dist/options.js"></script>
+	<label for="folders">Folder names</label><br>
+	<textarea id="folders" name="folders" rows="7" cols="32"></textarea>
+	<p id="status" role="status" aria-live="polite"></p>
+	<script src="options.js"></script>
 </body>
 </html>

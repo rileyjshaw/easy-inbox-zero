@@ -1,30 +1,33 @@
 {
+	"manifest_version": 3,
 	"name": "Easy Inbox Zero for Gmail: Hide message count",
 	"short_name": "Inbox (0)",
 	"description": "Achieve coveted Inbox Zero status without actually doing anything. This removes the unread count from your Gmail inbox & title bar.",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"icons": {
-		"128": "./images/icon128.png",
-		"48": "./images/icon48.png",
-		"16": "./images/icon16.png"
+		"128": "images/icon64.png",
+		"48": "images/icon24.png",
+		"16": "images/icon8.png"
 	 },
+	"permissions": ["storage"],
 	"content_scripts": [
 		{
 			"matches": ["*://mail.google.com/*"],
 			"run_at": "document_end",
-			"js": ["./dist/inbox-zero.js"]
+			"js": ["inbox-zero.js"]
 		}
 	],
-	"options_page": "./options.html",
-	"background": {
-		"scripts": ["./dist/background.js"],
-		"persistent": false
+	"options_ui": {
+		"page": "options.html",
+		"open_in_tab": true
 	},
-	"permissions": ["tabs", "*://mail.google.com/*"],
-	"manifest_version": 2,
-	"applications": {
+	"browser_specific_settings": {
 		"gecko": {
-			"id": "easy-inbox-zero@rileyjshaw.com"
+			"id": "easy-inbox-zero@rileyjshaw.com",
+			"strict_min_version": "142.0",
+			"data_collection_permissions": {
+				"required": ["none"]
+			}
 		}
 	}
 }
